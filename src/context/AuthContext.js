@@ -42,6 +42,10 @@ const checkPast = dispatch => async () => {
         const value = await AsyncStorage.getItem('loggedBefore')
         if (value) {
             dispatch({ type: 'change_past'})
+            const token = await AsyncStorage.getItem('token')
+            if (token) {
+                dispatch({ type: 'auth', payload: token})
+            }
         }
     } catch (err) {
         

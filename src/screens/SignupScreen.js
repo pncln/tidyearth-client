@@ -31,7 +31,7 @@ const SignupScreen = ({ navigation }) => {
     return (
         <Layout style={styles.layout}>
             <View style={styles.container}>
-                <Text style={styles.header} category="h2">New here?</Text>
+                <Text style={styles.header} category="h4">New here?</Text>
                 <Spacer /><Spacer />
                 <Input 
                     disabled={state.formDisabled}

@@ -29,8 +29,8 @@ const SigninScreen = ({ navigation }) => {
     return (
         <Layout style={styles.layout}>
             <View style={styles.container}>
-                <Text style={styles.header} category="h2">Hi there!</Text>
-                <Spacer /><Spacer />
+                <Text style={styles.header} category="h4">Hi there!</Text>
+                <Spacer /><Spacer /><Spacer />
                 <Input
                     disabled={state.formDisabled}
                     value={email}

@@ -15,11 +15,10 @@ export const AppNavigator = () => {
     const { state: authState, checkPast } = useContext(AuthContext)
     const { state: welcomeState } = useContext(WelcomeContext)
     const [isLoading, setIsLoading] = useState(true)
-
+    
     useEffect(() => {
         checkPast().then(() => {
           setIsLoading(false)
-          console.log('Checked past')
         })
     }, [])
 

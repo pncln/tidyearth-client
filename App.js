@@ -24,7 +24,7 @@ export default () => {
     <WelcomeProvider>
       <AuthProvider>
         <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={{...eva.light, ...theme}}>
+        <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
           <App />
         </ApplicationProvider>
       </AuthProvider>

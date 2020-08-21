@@ -8,7 +8,6 @@ const SigninScreen = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [checked, setChecked] = useState(false)
-    const [buttonDisabled, setButtonDisabled] = useState(false)
 
     const { state, signin, clearErrorMessage } = useContext(Context)
 
@@ -16,21 +15,15 @@ const SigninScreen = ({ navigation }) => {
         () => navigation.addListener('focus', () => clearErrorMessage),
     []);
 
-    const enabled = () => {
-        if (buttonDisabled) {
-            return disabled
-        } else {
-            return null
-        }
-    }
-
     const onCheckedChange = (isChecked) => {
         setChecked(isChecked);
     };
 
-    const auth = () => {
-        setButtonDisabled(true)
-        signin({ email, password })
+    const auth = async () => {
+        if (checked) {
+            await AsyncStorage.setItem('saveMe', 'true')
+        }
+        await signin({ email, password })
     }
 
     return (
@@ -39,6 +32,7 @@ const SigninScreen = ({ navigation }) => {
                 <Text style={styles.header} category="h2">Hi there!</Text>
                 <Spacer /><Spacer />
                 <Input
+                    disabled={state.formDisabled}
                     value={email}
                     label='Email'
                     onChangeText={value => setEmail(value)}
@@ -46,6 +40,7 @@ const SigninScreen = ({ navigation }) => {
                 />
                 <Spacer />
                 <Input
+                    disabled={state.formDisabled}
                     value={password}
                     label='Password'
                     onChangeText={value => setPassword(value)}
@@ -55,12 +50,12 @@ const SigninScreen = ({ navigation }) => {
                 <Spacer />
                 
                 <View style={{ display: 'flex', flexDirection: 'row'}}>
-                    <Toggle style={styles.saveMe} checked={checked} onChange={onCheckedChange}>
+                    <Toggle disabled={state.formDisabled} style={styles.saveMe} checked={checked} onChange={onCheckedChange}>
                         Save Me
                     </Toggle>
                     <Spacer /><Spacer /><Spacer />
                     <Button 
-                        { ...enabled }
+                        disabled={state.formDisabled}
                         onPress={ () => {
                             auth()
                         }}
@@ -69,7 +64,7 @@ const SigninScreen = ({ navigation }) => {
                     </Button>
                 </View>
                 <Spacer /><Spacer />
-                <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+                <TouchableOpacity disabled={state.formDisabled} onPress={() => navigation.navigate('Signup')}>
                     <Text style={{ textAlign: 'center' }}>Don't have an account?</Text>
                 </TouchableOpacity>
 

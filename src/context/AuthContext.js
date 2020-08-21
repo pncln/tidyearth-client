@@ -4,16 +4,18 @@ import teApi from '../apis/tidyearth'
 
 const authReducer = (state, action) => {
     switch (action.type) {
+        case 'formDisabled':
+            return { ...state, formDisabled: action.payload }
         case 'add_error_message':
-            return { ...state, errorMessage: action.payload, modalVisible: true, isLogged: false }
+            return { ...state, errorMessage: action.payload, modalVisible: true }
         case 'auth':
-            return { ...state, errorMessage: '', token: action.payload, modalVisible: false, isLogged: true, loggedBefore: true }
+            return { ...state, errorMessage: '', token: action.payload, isLogged: true, loggedBefore: true }
         case 'signout':
             return { ...state, token: '', isLogged: false}
         case 'clear_error_message':
-            return { ...state, errorMessage: '', modalVisible: false }
+            return { ...state, errorMessage: '', modalVisible: false, formDisabled: false}
         case 'change_past':
-            return { loggedBefore: true }
+            return { ...state, loggedBefore: true }
         default:
             return state
     }
@@ -23,9 +25,10 @@ const clearErrorMessage = dispatch => () => {
     dispatch({ type: 'clear_error_message' })
 }
 
-const signup = dispatch => async () => {
+const signup = dispatch => async ({ name, email, password, birthDate }) => {
     try {
-        const response = await teApi.post('/users/signup', { email, password })
+        dispatch({ type: 'formDisabled', payload: true })
+        const response = await teApi.post('/users', { name, email, password, birthDate })
         await AsyncStorage.setItem('token', response.data.token)
         await AsyncStorage.setItem('loggedBefore', 'true')
         dispatch({ type: 'auth', payload: response.data.token})
@@ -38,7 +41,7 @@ const checkPast = dispatch => async () => {
     try {
         const value = await AsyncStorage.getItem('loggedBefore')
         if (value) {
-            dispatch({ type: 'change_past '})
+            dispatch({ type: 'change_past'})
         }
     } catch (err) {
         
@@ -47,6 +50,7 @@ const checkPast = dispatch => async () => {
 
 const signin = (dispatch) => async ({ email, password }) => {
     try {
+        dispatch({ type: 'formDisabled', payload: true })
         const response = await teApi.post('/users/login', { email, password })
         await AsyncStorage.setItem('token', response.data.token)
         await AsyncStorage.setItem('loggedBefore', 'true')
@@ -64,5 +68,5 @@ const signout = dispatch => async () => {
 export const { Provider, Context } = createDataContext(
     authReducer,
     { signin, signup, signout, clearErrorMessage, checkPast },
-    { token: null, errorMessage: '',isLogged: false, modalVisible: false, loggedBefore: true }
+    { token: null, errorMessage: '',isLogged: false, modalVisible: false, loggedBefore: false, formDisabled: false }
 )

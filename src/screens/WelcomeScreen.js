@@ -4,8 +4,9 @@ import { Video } from 'expo-av'
 import { Text, Layout, Button } from '@ui-kitten/components';
 import { Context } from '../context/WelcomeContext'
 import Earth from './svg/Earth'
+import Constants from 'expo-constants'
 
-
+const { statusBarHeight } = Constants
 const { height } = Dimensions.get("window");
 
 const WelcomeScreen = () => {
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     content: {
-        width: 150
+        width: 150,
     },
     header: {
         color: 'white',
@@ -66,13 +67,14 @@ const styles = StyleSheet.create({
     getStarted: {
     },
     backgroundVideo: {
-        height: height,
+        height: height + statusBarHeight,
         position: "absolute",
         top: 0,
         left: 0,
         alignItems: "stretch",
-        bottom: 0,
-        right: 0
+        right: 0,
+        borderWidth: 5,
+        borderColor: 'red'
       }
 })
 

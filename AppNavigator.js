@@ -17,9 +17,18 @@ export const AppNavigator = () => {
     const [isLoading, setIsLoading] = useState(true)
     
     useEffect(() => {
-        checkPast().then(() => {
-          setIsLoading(false)
-        })
+      let subscriber
+      const func = async () => {
+        subscriber = await checkPast()
+        setIsLoading(false)
+      }
+      func()
+
+      return () => {
+        if (subscriber) {
+          subscriber.remove()
+        }
+      }
     }, [])
 
     return (

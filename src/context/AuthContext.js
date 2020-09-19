@@ -16,6 +16,10 @@ const authReducer = (state, action) => {
             return { ...state, errorMessage: '', modalVisible: false, formDisabled: false}
         case 'change_past':
             return { ...state, loggedBefore: true }
+        case 'fetch_data':
+            return { ...state, data: action.payload }
+        case 'fetch_avatar':
+            return { ...state, avatar: action.payload }
         default:
             return state
     }
@@ -60,9 +64,35 @@ const signin = (dispatch) => async ({ email, password }) => {
         await AsyncStorage.setItem('loggedBefore', 'true')
         dispatch({ type: 'auth', payload: response.data.token })
     } catch (err) {
-        dispatch({ type: 'add_error_message', payload: 'Something went wrong. while signing in.' })
+        dispatch({ type: 'add_error_message', payload: 'Something went wrong while signing in.' })
     }
 } 
+
+const fetchData = dispatch => async ({ token }) => {
+    try {
+        const response = await teApi.get('/users/me', {}, { 
+            headers: { 
+                'Authorization': `Bearer ${token}`
+            }
+        }) 
+        dispatch({ type: 'fetch_data', payload: response.data })
+    } catch (e) {
+        dispatch({ type: 'add_error_message', payload: 'Oops, could not fetch user data!' })
+    }
+}
+
+const fetchAvatar = dispatch => async ({ token }) => {
+    try {
+        const response = await teApi.get('/users/me/avatar', {}, { 
+            headers: { 
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        dispatch({ type: 'fetch_avatar', payload: response.data })
+    } catch (e) {
+        dispatch({ type: 'add_error_message', payload: 'Oops, could not fetch user avatar!' })
+    }
+}
 
 const signout = dispatch => async () => {
     await AsyncStorage.removeItem('token')
@@ -71,6 +101,9 @@ const signout = dispatch => async () => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signin, signup, signout, clearErrorMessage, checkPast },
-    { token: null, errorMessage: '',isLogged: false, modalVisible: false, loggedBefore: false, formDisabled: false }
+    { signin, signup, signout, clearErrorMessage, checkPast, fetchData, fetchAvatar },
+    { token: null,
+        errorMessage: '',isLogged: false, modalVisible: false, loggedBefore: false, formDisabled: false,
+        data: null, avatar: null
+    }
 )

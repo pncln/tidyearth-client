@@ -10,10 +10,9 @@ export const Loader = () => (
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexWrap: 'wrap',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 })
 

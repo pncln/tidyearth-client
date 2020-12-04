@@ -73,8 +73,6 @@ const styles = StyleSheet.create({
         left: 0,
         alignItems: "stretch",
         right: 0,
-        borderWidth: 5,
-        borderColor: 'red'
       }
 })
 

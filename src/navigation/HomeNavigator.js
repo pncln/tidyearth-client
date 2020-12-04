@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ProfileNavigator } from './ProfileNavigator'
 import { FeedNavigator } from './FeedNavigator'
 import { TeamsNavigator } from './TeamsNavigator'
+import { ScanNavigator } from './ScanNavigator'
 import { Icon } from '@ui-kitten/components';
 import { BottomTabBar as HomeTabBar } from '../components/HomeTabBar'
 
@@ -18,6 +19,10 @@ const FeedIcon = (props) => (
   <Icon {...props} name='home-outline'/>
 );
 
+const ScanIcon = (props) => (
+  <Icon {...props} name='camera-outline'/>
+);
+
 const BottomTab = createBottomTabNavigator();
 export const HomeNavigator = () => {
   return (
@@ -26,6 +31,11 @@ export const HomeNavigator = () => {
             name="Feed"
             component={FeedNavigator}
             options={{ title: 'FEED', tabBarIcon: FeedIcon }}
+        />
+        <BottomTab.Screen
+            name="Scan"
+            component={ScanNavigator}
+            options={{ title: 'SCAN', tabBarIcon: ScanIcon }}
         />
         <BottomTab.Screen
             name="Teams"

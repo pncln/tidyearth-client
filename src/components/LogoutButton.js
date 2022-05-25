@@ -5,7 +5,13 @@ import { Button } from '@ui-kitten/components'
 const LogoutButton = () => {
     return (
         <View>
-            <Button status='danger'>Sign Out</Button>
+            <Button 
+                onPress={() => {
+                    logout();
+                }}
+                status='danger'>
+            Sign Out
+            </Button>
         </View>
     )
 }

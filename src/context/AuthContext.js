@@ -1,5 +1,5 @@
 import createDataContext from './createDataContext'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import teApi from '../apis/tidyearth'
 
 const authReducer = (state, action) => {
@@ -43,14 +43,14 @@ const signup = dispatch => async ({ name, email, password, birthDate }) => {
 
 const checkPast = dispatch => async () => {
     try {
-        // const value = await AsyncStorage.getItem('loggedBefore')
-        // if (value) {
-        //     dispatch({ type: 'change_past'})
-        //     const token = await AsyncStorage.getItem('token')
-        //     if (token) {
-        //         dispatch({ type: 'auth', payload: token})
-        //     }
-        // }
+        const value = await AsyncStorage.getItem('loggedBefore')
+        if (value) {
+            dispatch({ type: 'change_past'})
+            const token = await AsyncStorage.getItem('token')
+            if (token) {
+                dispatch({ type: 'auth', payload: token})
+            }
+        }
     } catch (err) {
         
     }

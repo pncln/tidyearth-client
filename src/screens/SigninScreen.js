@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Input, Layout, Button, Text, Toggle, Modal, Card } from '@ui-kitten/components'
 import Spacer from '../components/Spacer'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Context } from '../context/AuthContext'
 
 const SigninScreen = ({ navigation }) => {

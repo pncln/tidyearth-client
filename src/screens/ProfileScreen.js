@@ -1,13 +1,13 @@
 import React, { useEffect, useContext, useState, useCallback } from 'react'
 import { StyleSheet, Dimensions, View, ScrollView, RefreshControl } from 'react-native'
-import { Layout, Text, Divider, Card, Modal } from '@ui-kitten/components'
+import { Layout, Text, Divider, Card, Modal, Button } from '@ui-kitten/components'
 import { Context as AuthContext } from '../context/AuthContext'
 import Header from '../components/Header'
 import Loader from '../components/Loader'
 import Stats from '../components/Stats'
 import Spacer from '../components/Spacer'
 import ProfileScreenSpacer from '../components/ProfileScreenSpacer'
-import LogoutButton from '../components/LogoutButton'
+// import LogoutButton from '../components/LogoutButton'
 
 const wait = (timeout) => {
     return new Promise(resolve => {
@@ -16,20 +16,28 @@ const wait = (timeout) => {
   }
 
 const ProfileScreen = ({ navigation }) => {
-    const { state, fetchData, fetchAvatar, clearErrorMessage } = useContext(AuthContext)
+    const { state, signout, fetchData, fetchAvatar, clearErrorMessage } = useContext(AuthContext)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
     const [refreshing, setRefreshing] = useState(false);
+
+    const logout = async () => {
+        await signout()
+    }
     
     useEffect(() => {
         async function fetch () {
             navigation.addListener('focus', () => clearErrorMessage)
             try {
                 await fetchData(state.token)
-                await fetchAvatar(state.token)
-                if (state.errorMessage) {
-                    throw new Error(state.errorMessage)
+                if (state.data.avatar) {
+                    await fetchAvatar(state.token)
+                    if (state.errorMessage) {
+                        throw new Error(state.errorMessage)
+                    }
                 }
+                
+
                 setLoading(false)
             } catch (e) {
                 setLoading(false)
@@ -60,7 +68,14 @@ const ProfileScreen = ({ navigation }) => {
                     <View style={styles.mainContent}>
                         <Stats />
                         <Spacer />
-                        <LogoutButton />
+                        <Button 
+                            onPress={() => {
+                                logout();
+                            }}
+                            status='danger'>
+                                Sign Out
+                        </Button>
+                        {/* <LogoutButton /> */}
                     </View>
                 </ProfileScreenSpacer>
 
